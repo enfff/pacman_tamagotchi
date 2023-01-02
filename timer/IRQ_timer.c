@@ -26,7 +26,7 @@
 /******************************************************************************
 ** Function name:		Timer0_IRQHandler
 **
-** Descriptions:		Handles idle pet animation
+** Descriptions:		Handles idle pet animation, 25ms, 25MHz
 **
 ** parameters:			None
 ** Returned value:		None
@@ -72,8 +72,6 @@ void TIMER1_IRQHandler (void)
 	static int8_t minutes=0;
 	static int8_t hours=0;
 	
-	static char updatedTime[8] = {'0', '0', ':', '0', '0', ':', '0', '0'};
-	
 	seconds++; 
 	
 	if (seconds % 59 == 0 && seconds >= 1){
@@ -86,7 +84,7 @@ void TIMER1_IRQHandler (void)
 		hours++;
 	}
 	
-	sprintf(updatedTime, "Age: %02d:%02d:%02d", hours, minutes, seconds);
+	DrawAgeBar(hours, minutes, seconds);
 	
 	if(seconds % 5 == 0 && seconds > 1){
 		pet_decreaseSatiety();

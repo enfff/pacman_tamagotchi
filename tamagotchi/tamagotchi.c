@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 #include "tamagotchi.h"
 #include "pet.h"
 #include "../GLCD/GLCD.h"
@@ -12,13 +13,10 @@ static uint8_t happiness = 5;
 	
 void Tamagotchi_Init(void){
 	DrawBackground();
-	//DrawHappinessBar();
-	//DrawSatietyBar();
-	//DrawPet_idle_stance2(PET_STARTING_X, PET_STARTING_Y);
-}
-
-void DrawAgeBar(uint8_t *updatedTime){
-	GUI_Text(0, 0, updatedTime, White, Blue);
+	DrawHappinessBar();
+	DrawSatietyBar();
+	DrawPlayButton('S');
+	DrawSnackButton('N');
 }
 
 void pet_decreaseSatiety(void){
@@ -41,22 +39,56 @@ void pet_decreaseHappiness(void){
 	DrawHappinessBar();
 }
 
+void DrawAgeBar(int8_t hours, int8_t minutes, int8_t seconds){
+	char updatedTime[13];
+	sprintf(updatedTime, "AGE: %02d:%02d:%02d", hours, minutes, seconds);
+	GUI_Text(9, 22, (uint8_t *) updatedTime, White, Black);
+}
+
 void DrawSatietyBar(void){
 	char str[16];
-	sprintf(str, "Hunger: %02d", satiety);
-	GUI_Text(0, 20, (uint8_t *) str, White, Red);
+	sprintf(str, "SATIENESS: %02d", satiety);
+	GUI_Text(125, 9, (uint8_t *) str, White, Black);
 }
 
 void DrawHappinessBar(void){
 	char str[16];
-	sprintf(str, "Happiness: %02d", happiness);
-	GUI_Text(0, 40, (uint8_t *) str, White, Green);
+	sprintf(str, "HAPPINESS: %02d", happiness);
+	GUI_Text(125, 36, (uint8_t *) str, White, Black);
 }
 
 void GameOver(void){
-	DrawPet_death(PET_STARTING_X, PET_STARTING_Y);
 	disable_timer(0);
 	disable_timer(1);
+	DrawPet_death(PET_STARTING_X, PET_STARTING_Y);
+}
+
+void DrawPlayButton(uint8_t option){
+	//Case S: selezionato
+	//Case N: non selezionato
+	switch(option){
+		case 'S':
+			GUI_Text(45, 292, (uint8_t *) "PLAY", White, Blue);
+			break;
+		case 'N':
+			GUI_Text(45, 292, (uint8_t *) "PLAY", White, Black);
+		default:
+			break;
+	}
+}
+
+void DrawSnackButton(uint8_t option){
+	//Case S: selezionato
+	//Case N: non selezionato
+	switch(option){
+	case 'S':
+		GUI_Text(149, 292, (uint8_t *) "SNACK", White, Blue);
+		break;
+	case 'N':
+		GUI_Text(149, 292, (uint8_t *) "SNACK", White, Black);
+	default:
+		break;
+	}
 }
 
 void DrawBackground(void){
