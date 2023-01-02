@@ -8,14 +8,14 @@
 # define PET_STARTING_X 185
 # define PET_STARTING_Y 105
 
-static uint8_t satiety = 5;
-static uint8_t happiness = 5;
+static uint8_t satiety = 3;
+static uint8_t happiness = 3;
 	
 void Tamagotchi_Init(void){
 	DrawBackground();
 	DrawHappinessBar();
 	DrawSatietyBar();
-	DrawPlayButton('S');
+	DrawPlayButton('N');
 	DrawSnackButton('N');
 }
 
@@ -57,12 +57,6 @@ void DrawHappinessBar(void){
 	GUI_Text(125, 36, (uint8_t *) str, White, Black);
 }
 
-void GameOver(void){
-	disable_timer(0);
-	disable_timer(1);
-	DrawPet_death(PET_STARTING_X, PET_STARTING_Y);
-}
-
 void DrawPlayButton(uint8_t option){
 	//Case S: selezionato
 	//Case N: non selezionato
@@ -89,6 +83,36 @@ void DrawSnackButton(uint8_t option){
 	default:
 		break;
 	}
+}
+
+void pet_play(void){
+	
+	//Disabilita i timer
+	disable_timer(1);
+	disable_timer(0);
+	
+	GUI_Text(0,0, (uint8_t *) "AOOOOOOOO HA PREMUTO PLAY", Black, White);
+	
+	
+	if(happiness != 5){
+		happiness++;
+	}
+	
+	//reset_hunger_counter(); // da fare dentro timer
+	enable_timer(0);
+	enable_timer(1);
+	//Abilita i timer, ma fai ricominciare il conteggio di count to 5
+	//disableCountdown();
+}
+
+void pet_snack(void){
+	GUI_Text(0,0, (uint8_t *) "AOOOOOOOO HA PREMUTO SNACK", Black, White);
+}
+
+void GameOver(void){
+	disable_timer(0);
+	disable_timer(1);
+	DrawPet_death(PET_STARTING_X, PET_STARTING_Y);
 }
 
 void DrawBackground(void){

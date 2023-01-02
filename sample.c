@@ -23,9 +23,10 @@
 /* Includes ------------------------------------------------------------------*/
 #include "LPC17xx.h"
 #include "GLCD/GLCD.h" 
-#include "TouchPanel/TouchPanel.h"
 #include "timer/timer.h"
 #include "tamagotchi/tamagotchi.h"
+#include "joystick/joystick.h"
+#include "RIT/RIT.h"
 
 #define SIMULATOR 1
 
@@ -41,7 +42,12 @@ int main(void)
 	init_timer(0, 0x979C8);				// 25ms, 25Mhz
 	init_timer(1, 0x17D7840);			// 1s,   25Mhz
 	
-	Tamagotchi_Init();	
+	Tamagotchi_Init();
+	
+	joystick_init();
+	init_RIT(0x4E2);								// 50 micro secondi
+	enable_RIT();
+	
 	enable_timer(0);							// handles idle animation
 	enable_timer(1);							// handles age
 	

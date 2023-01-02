@@ -13,7 +13,6 @@
 #include "lpc17xx.h"
 #include "timer.h"
 #include "../GLCD/GLCD.h" 
-#include "../TouchPanel/TouchPanel.h"
 #include "../tamagotchi/pet.h"
 #include "../tamagotchi/tamagotchi.h"
 
@@ -72,23 +71,27 @@ void TIMER1_IRQHandler (void)
 	static int8_t minutes=0;
 	static int8_t hours=0;
 	
-	seconds++; 
+	static int8_t statsCountdown = 5;
 	
-	if (seconds % 59 == 0 && seconds >= 1){
+	seconds++;
+	statsCountdown--;			// decreases every second
+	
+	if (seconds % 60 == 0 && seconds >= 1){
 		seconds = 0;
 		minutes++;
 	}
 	
-	if (minutes % 59 == 0 && minutes >= 1){
+	if (minutes % 60 == 0 && minutes >= 1){
 		minutes = 0;
 		hours++;
 	}
 	
 	DrawAgeBar(hours, minutes, seconds);
 	
-	if(seconds % 5 == 0 && seconds > 1){
+	if(statsCountdown % 5 == 0){
 		pet_decreaseSatiety();
 		pet_decreaseHappiness();
+		statsCountdown = 5;
 	}
 	
   LPC_TIM1->IR = 1;			/* clear interrupt flag */

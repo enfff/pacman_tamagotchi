@@ -396,3 +396,17 @@ void DrawPet_death(int x_offset, int y_offset){
 		}
 	}
 }
+
+
+void DrawSnack(int x_offset, int y_offset){
+	int i,j;
+	
+	for(i=0; i<SNACKSIZE; i++){
+		for(j=0; j<SNACKSIZE; j++){	
+			uint16_t PixelColorImDrawing = pet_stance2[i*SNACKSIZE + j];
+			LCD_SetPoint(y_offset + j, x_offset + i, PixelColorImDrawing);
+		}
+	}
+}
+void DrawPlay(int x_offset, int y_offset);
+	
