@@ -19,9 +19,9 @@
 
 
 // User defined variables *****************************************************
-	
-	//char updatedTime[8] = {'0', '0', ':', '0', '0', ':', '0', '0'};
-	
+
+# define PET_STARTING_X 185
+# define PET_STARTING_Y 105
 
 /******************************************************************************
 ** Function name:		Timer0_IRQHandler
@@ -40,13 +40,13 @@ void TIMER0_IRQHandler (void)
 	
 	switch(software_count){
 		case 1:
-			DrawPet_idle_stance1(200, 105);
+			DrawPet_idle_stance1(PET_STARTING_X, PET_STARTING_Y);
 		case 2:
-			DrawPet_idle_stance2(200, 105);
+			DrawPet_idle_stance2(PET_STARTING_X, PET_STARTING_Y);
 		case 3:
-			DrawPet_idle_stance1(200, 105);
+			DrawPet_idle_stance1(PET_STARTING_X, PET_STARTING_Y);
 		case 4:
-			DrawPet_idle_stance2(200, 105);
+			DrawPet_idle_stance2(PET_STARTING_X, PET_STARTING_Y);
 			software_count = 0;
 		default:
 			break;

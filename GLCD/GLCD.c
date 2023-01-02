@@ -431,7 +431,7 @@ void LCD_Initialization(void)
   }
 
     delay_ms(50);   /* delay 50 ms */	
-		//LCD_SetBackground(Black);
+		LCD_SetBackground(Black);
 }
 
 /*******************************************************************************

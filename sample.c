@@ -37,14 +37,14 @@ int main(void)
 {
   SystemInit();  												/* System Initialization (i.e., PLL)  */
   LCD_Initialization();
-	TP_Init();
+	//TP_Init();
 	
-	init_timer(0, 0x979C8);				// 25ms, 25Mhz
-	init_timer(1, 0x17D7840);			// 1s,   25Mhz
+	//init_timer(0, 0x979C8);				// 25ms, 25Mhz
+	//init_timer(1, 0x17D7840);			// 1s,   25Mhz
 	
 	Tamagotchi_Init();	
-	enable_timer(0);							// handles idle animation
-	enable_timer(1);							// handles age
+	//enable_timer(0);							// handles idle animation
+	//enable_timer(1);							// handles age
 	
 	LPC_SC->PCON |= 0x1;									/* power-down	mode										*/
 	LPC_SC->PCON &= ~(0x2);						
