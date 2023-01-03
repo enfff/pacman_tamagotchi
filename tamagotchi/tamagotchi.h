@@ -19,7 +19,8 @@ void pet_play(void);
 void pet_snack(void);
 void pet_decreaseSatiety(void);
 void pet_decreaseHappiness(void);
-
+void pet_increaseSatiety(void);
+void pet_increaseHappiness(void);
 #endif 
 /*********************************************************************************************************
       END FILE
