@@ -156,6 +156,19 @@ uint32_t init_timer ( uint8_t timer_num, uint32_t TimerInterval )
   return (0);
 }
 
+// <-------------------------------------------------------------------------->
+
+static int statsCountdown = 5;
+
+int decrease_countdown(void){
+	statsCountdown--;
+	return statsCountdown;
+}
+
+void reset_countdown(void){
+	statsCountdown = 5;
+}
+
 /******************************************************************************
 **                            End Of File
 ******************************************************************************/
