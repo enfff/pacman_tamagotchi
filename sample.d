@@ -10,5 +10,6 @@
 .\sample.o: GLCD/GLCD.h
 .\sample.o: timer/timer.h
 .\sample.o: tamagotchi/tamagotchi.h
+.\sample.o: tamagotchi/pet.h
 .\sample.o: joystick/joystick.h
 .\sample.o: RIT/RIT.h

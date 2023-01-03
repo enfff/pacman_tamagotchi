@@ -137,7 +137,7 @@ void GameOver(void){
 	disable_timer(1);
 	
 	GUI_Text(85, 100, (uint8_t *) "GAME OVER", Red, Black);
-	DrawPet_death(PET_STARTING_X, PET_STARTING_Y);
+	pet_animation_death(PET_STARTING_X, PET_STARTING_Y);
 	LCD_SetBackground(Black);
 	GUI_Text(103, 272, (uint8_t *) "RESET", White, Blue);
 }

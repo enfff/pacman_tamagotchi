@@ -39,9 +39,9 @@ void TIMER0_IRQHandler (void)
 	
 	switch(software_count){
 		case 1:
-			DrawPet_idle_stance1(PET_STARTING_X, PET_STARTING_Y);
+			pet_animation_idle1(PET_STARTING_X, PET_STARTING_Y);
 		case 2:
-			DrawPet_idle_stance2(PET_STARTING_X, PET_STARTING_Y);
+			pet_animation_idle2(PET_STARTING_X, PET_STARTING_Y);
 			software_count = 0;
 		default:
 			break;

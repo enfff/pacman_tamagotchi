@@ -287,7 +287,7 @@ uint16_t pet_death6[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
 /* User Functions ---------------------------------------------------------------*/
 
-void DrawPet_idle_stance1(int x_offset, int y_offset){
+void pet_animation_idle1(int x_offset, int y_offset){
 int i,j;
 	
 	for(i=0; i<PETSIZE; i++){
@@ -298,7 +298,7 @@ int i,j;
 	}
 }
 
-void DrawPet_idle_stance2(int x_offset, int y_offset){
+void pet_animation_idle2(int x_offset, int y_offset){
 int i,j;
 	
 	for(i=0; i<PETSIZE; i++){
@@ -309,8 +309,14 @@ int i,j;
 	}
 }
 
-void DrawPet_death(int x_offset, int y_offset){
+void pet_animation_death(int x_offset, int y_offset){
 	int i,j;
+	
+	for(i=0; i<PETSIZE; i++){				// clear the screen from whatever was there
+		for(j=0; j<PETSIZE; j++){	
+			LCD_SetPoint(y_offset + j, x_offset + i, Black);
+		}
+	}
 	
 	for(i=0; i<PETSIZE; i++){
 		for(j=0; j<PETSIZE; j++){	
