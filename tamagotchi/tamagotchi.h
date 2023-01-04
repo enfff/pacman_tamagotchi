@@ -13,11 +13,12 @@ void DrawHappinessBar(void);
 void DrawAgeBar(int8_t hours, int8_t minutes, int8_t seconds);
 void DrawPlayButton(uint8_t option);
 void DrawSnackButton(uint8_t option);
+void DrawResetButton(uint8_t option);
 
 void GameOver(void);
 void pet_play(void);
 void pet_snack(void);
-void pet_decreaseSatiety(void);
+int pet_decreaseSatiety(void);			//Ritorna una flag... non ne sono fiero
 void pet_decreaseHappiness(void);
 void pet_increaseSatiety(void);
 void pet_increaseHappiness(void);

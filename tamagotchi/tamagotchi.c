@@ -13,8 +13,8 @@ static uint8_t happiness;
 static int canGameRestart_flag;
 	
 void Tamagotchi_Init(void){
-	satiety = 4;
-	happiness = 4;
+	satiety = 2;
+	happiness = 2;
 	canGameRestart_flag = 0;
 	
 	DrawBackground();
@@ -32,13 +32,15 @@ int gameCanRestart(int value){
 	return canGameRestart_flag;
 }
 
-void pet_decreaseSatiety(void){
+int pet_decreaseSatiety(void){
 	satiety--;
 	DrawSatietyBar();
 	
 	if (satiety == 0){
 		GameOver();
+		return 1;
 	}
+	return 0;
 }
 
 void pet_increaseSatiety(void){
@@ -113,6 +115,20 @@ void DrawSnackButton(uint8_t option){
 	}
 }
 
+void DrawResetButton(uint8_t option){
+	//Case S: selezionato
+	//Case N: non selezionato
+	switch(option){
+	case 'S':
+		GUI_Text(103, 272, (uint8_t *) "RESET", White, Blue);
+		break;
+	case 'N':
+		GUI_Text(103, 272, (uint8_t *) "RESET", White, Black);
+	default:
+		break;
+	}
+}
+
 void pet_play(void){
 	disable_timer(1);
 	disable_timer(0);
@@ -149,10 +165,13 @@ void GameOver(void){
 	disable_timer(0);
 	disable_timer(1);
 	
+	reset_timer(0);
+	reset_timer(1);
+	
 	GUI_Text(85, 100, (uint8_t *) "GAME OVER", Red, Black);
 	pet_animation_death(PET_STARTING_X, PET_STARTING_Y);
 	LCD_SetBackground(Black);
-	GUI_Text(103, 272, (uint8_t *) "RESET", White, Blue);
+	DrawResetButton('S');
 	gameCanRestart(1);
 }
 

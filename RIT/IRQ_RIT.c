@@ -55,6 +55,7 @@ void RIT_IRQHandler (void)
 			reset_timer(0);
 			reset_timer(1);
 			
+			DrawResetButton('N');				// deseleziona il tasto reset, precedentemente selezionato dal GameOver()
 			Tamagotchi_Init();
 			
 			enable_RIT();

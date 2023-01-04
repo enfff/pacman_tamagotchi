@@ -12,7 +12,7 @@ I (C:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\mpu_a
 I (C:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include\system_LPC17xx.h)(0x58493F92)
 I (GLCD/GLCD.h)(0x63B2A491)
 I (timer/timer.h)(0x63B3FAD3)
-I (tamagotchi/tamagotchi.h)(0x63B4366F)
+I (tamagotchi/tamagotchi.h)(0x63B566B1)
 I (tamagotchi/pet.h)(0x63B542EC)
 I (joystick/joystick.h)(0x63984A3B)
 I (RIT/RIT.h)(0x63B34C54)
@@ -27,7 +27,7 @@ I (C:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis
 I (C:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626FAD4E)
 I (C:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\mpu_armv7.h)(0x626FAD4E)
 I (C:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include\system_LPC17xx.h)(0x58493F92)
-F (.\timer\IRQ_timer.c)(0x63B43708)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I.\RTE\_Target_1-IC:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DLPC175x_6x -D_RTE_ -DSIMULATOR-o .\irq_timer.o --omf_browse .\irq_timer.crf --depend .\irq_timer.d)
+F (.\timer\IRQ_timer.c)(0x63B56753)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I.\RTE\_Target_1-IC:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DLPC175x_6x -D_RTE_ -DSIMULATOR-o .\irq_timer.o --omf_browse .\irq_timer.crf --depend .\irq_timer.d)
 I (C:\Keil_v5\ARM\ARMCLANG5\include\string.h)(0x5E8E9F32)
 I (C:\Keil_v5\ARM\ARMCLANG5\include\stdio.h)(0x5E8E9F32)
 I (C:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include\lpc17xx.h)(0x5E1DC4B4)
@@ -41,7 +41,7 @@ I (C:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include\sy
 I (timer\timer.h)(0x63B3FAD3)
 I (timer\../GLCD/GLCD.h)(0x63B2A491)
 I (timer\../tamagotchi/pet.h)(0x63B542EC)
-I (timer\../tamagotchi/tamagotchi.h)(0x63B4366F)
+I (timer\../tamagotchi/tamagotchi.h)(0x63B566B1)
 F (.\timer\lib_timer.c)(0x63B53A2B)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I.\RTE\_Target_1-IC:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DLPC175x_6x -D_RTE_ -DSIMULATOR-o .\lib_timer.o --omf_browse .\lib_timer.crf --depend .\lib_timer.d)
 I (C:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include\lpc17xx.h)(0x5E1DC4B4)
 I (C:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x626FAD4E)
@@ -86,10 +86,10 @@ I (C:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis
 I (C:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\mpu_armv7.h)(0x626FAD4E)
 I (C:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include\system_LPC17xx.h)(0x58493F92)
 F (.\tamagotchi\pet.h)(0x63B542EC)()
-F (.\tamagotchi\tamagotchi.c)(0x63B549A7)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I.\RTE\_Target_1-IC:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DLPC175x_6x -D_RTE_ -DSIMULATOR-o .\tamagotchi.o --omf_browse .\tamagotchi.crf --depend .\tamagotchi.d)
+F (.\tamagotchi\tamagotchi.c)(0x63B566D5)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I.\RTE\_Target_1-IC:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DLPC175x_6x -D_RTE_ -DSIMULATOR-o .\tamagotchi.o --omf_browse .\tamagotchi.crf --depend .\tamagotchi.d)
 I (C:\Keil_v5\ARM\ARMCLANG5\include\stdio.h)(0x5E8E9F32)
 I (C:\Keil_v5\ARM\ARMCLANG5\include\stdint.h)(0x5E8E9F32)
-I (tamagotchi\tamagotchi.h)(0x63B4366F)
+I (tamagotchi\tamagotchi.h)(0x63B566B1)
 I (tamagotchi\pet.h)(0x63B542EC)
 I (tamagotchi\../GLCD/GLCD.h)(0x63B2A491)
 I (C:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include\LPC17xx.h)(0x5E1DC4B4)
@@ -100,7 +100,7 @@ I (C:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis
 I (C:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\mpu_armv7.h)(0x626FAD4E)
 I (C:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include\system_LPC17xx.h)(0x58493F92)
 I (tamagotchi\../timer/timer.h)(0x63B3FAD3)
-F (.\tamagotchi\tamagotchi.h)(0x63B4366F)()
+F (.\tamagotchi\tamagotchi.h)(0x63B566B1)()
 F (.\joystick\lib_joystick.c)(0x63984A3B)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I.\RTE\_Target_1-IC:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DLPC175x_6x -D_RTE_ -DSIMULATOR-o .\lib_joystick.o --omf_browse .\lib_joystick.crf --depend .\lib_joystick.d)
 I (C:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include\lpc17xx.h)(0x5E1DC4B4)
 I (C:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x626FAD4E)
@@ -111,7 +111,7 @@ I (C:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis
 I (C:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\mpu_armv7.h)(0x626FAD4E)
 I (C:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include\system_LPC17xx.h)(0x58493F92)
 I (joystick\joystick.h)(0x63984A3B)
-F (.\RIT\IRQ_RIT.c)(0x63B54241)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I.\RTE\_Target_1-IC:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DLPC175x_6x -D_RTE_ -DSIMULATOR-o .\irq_rit.o --omf_browse .\irq_rit.crf --depend .\irq_rit.d)
+F (.\RIT\IRQ_RIT.c)(0x63B55C40)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I.\RTE\_Target_1-IC:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DLPC175x_6x -D_RTE_ -DSIMULATOR-o .\irq_rit.o --omf_browse .\irq_rit.crf --depend .\irq_rit.d)
 I (C:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include\lpc17xx.h)(0x5E1DC4B4)
 I (C:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h)(0x626FAD4E)
 I (C:\Keil_v5\ARM\ARMCLANG5\include\stdint.h)(0x5E8E9F32)
@@ -121,7 +121,7 @@ I (C:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis
 I (C:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\mpu_armv7.h)(0x626FAD4E)
 I (C:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include\system_LPC17xx.h)(0x58493F92)
 I (RIT\RIT.h)(0x63B34C54)
-I (RIT\../tamagotchi/tamagotchi.h)(0x63B4366F)
+I (RIT\../tamagotchi/tamagotchi.h)(0x63B566B1)
 I (RIT\../timer/timer.h)(0x63B3FAD3)
 F (.\RIT\lib_RIT.c)(0x63B53A58)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I.\RTE\_Target_1-IC:\Users\Enf\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include-D__UVISION_VERSION="537" -D_RTE_ -DLPC175x_6x -D_RTE_ -DSIMULATOR-o .\lib_rit.o --omf_browse .\lib_rit.crf --depend .\lib_rit.d)
 I (C:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include\lpc17xx.h)(0x5E1DC4B4)

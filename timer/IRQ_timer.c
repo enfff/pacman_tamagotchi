@@ -67,7 +67,7 @@ void TIMER1_IRQHandler (void)
 	static int8_t seconds=0;
 	static int8_t minutes=0;
 	static int8_t hours=0;
-	
+	static int HoChiamatoGameOver = 0;
 	seconds++;
 	
 	if (seconds % 60 == 0 && seconds >= 1){
@@ -83,9 +83,15 @@ void TIMER1_IRQHandler (void)
 	DrawAgeBar(hours, minutes, seconds);
 	
 	if(decrease_countdown() % 5 == 0){
-		pet_decreaseSatiety();
-		pet_decreaseHappiness();
+		HoChiamatoGameOver = pet_decreaseSatiety();
+		
+		if(HoChiamatoGameOver == 0){
+			pet_decreaseHappiness();
+		}
+	
 		reset_countdown();
+		
+		HoChiamatoGameOver = 0; // Dovrei modificare questo valore dentro la GameOver(), ma è più semplice chiamarla qui;
 	}
 	
   LPC_TIM1->IR = 1;			/* clear interrupt flag */
