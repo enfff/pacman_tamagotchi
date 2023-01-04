@@ -10,6 +10,7 @@
 #include "lpc17xx.h"
 #include "RIT.h"
 #include "../tamagotchi/tamagotchi.h"
+#include "../timer/timer.h"
 
 /******************************************************************************
 ** Function name:		RIT_IRQHandler
@@ -27,18 +28,41 @@ void RIT_IRQHandler (void)
 	
 	if((LPC_GPIO1->FIOPIN & (1<<25)) == 0){ // SELECT
 		
-		if(last_key_pressed == 1){
+		if(last_key_pressed == 1){						//Play
 			disable_RIT();
 			pet_play();
+			DrawPlayButton('N');
 			enable_RIT();
+			
 		}
 		
-		if(last_key_pressed == 2){
+		if(last_key_pressed == 2){						//Snack
 			disable_RIT();
 			pet_snack();
+			DrawSnackButton('N');
 			enable_RIT();
 		}
 		
+		last_key_pressed = 0;
+		
+		if(gameCanRestart(0)){				// questa funzione controlla che la flag gameCanRestart_flag
+			
+			disable_RIT();							// contenuta in tamagotchi.c sia messa ad 1; l'argomento 0
+			disable_timer(0);						// è in OR logico con la flag
+			disable_timer(1);
+			
+			reset_RIT();
+			reset_timer(0);
+			reset_timer(1);
+			
+			Tamagotchi_Init();
+			
+			enable_RIT();
+			enable_timer(0);
+			enable_timer(1);
+
+		}
+	
 		reset_RIT();
   }
 	
@@ -62,7 +86,9 @@ void RIT_IRQHandler (void)
 	
 	// <----------------------------------------------------->
 	
+	disable_RIT();
 	reset_RIT();
+	enable_RIT();
 	
   LPC_RIT->RICTRL |= 0x1;	/* clear interrupt flag */
   return;

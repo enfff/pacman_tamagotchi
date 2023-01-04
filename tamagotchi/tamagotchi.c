@@ -8,49 +8,58 @@
 # define PET_STARTING_X 185
 # define PET_STARTING_Y 105
 
-static uint8_t satiety = 3;
-static uint8_t happiness = 3;
+static uint8_t satiety;
+static uint8_t happiness;
+static int canGameRestart_flag;
 	
 void Tamagotchi_Init(void){
+	satiety = 4;
+	happiness = 4;
+	canGameRestart_flag = 0;
+	
 	DrawBackground();
-	GameOver();
-	//pet_animation_play(185, 105);
-	/*	DrawSatietyBar();
+	DrawSatietyBar();
 	DrawHappinessBar();
 	DrawPlayButton('N');
-	DrawSnackButton('N'); */
+	DrawSnackButton('N');
 	
+}
+
+int gameCanRestart(int value){
+	// fa l'or logico tra flag e value. Flag viene settata in GameOver();
+	canGameRestart_flag |= value;
+	
+	return canGameRestart_flag;
 }
 
 void pet_decreaseSatiety(void){
 	satiety--;
+	DrawSatietyBar();
 	
 	if (satiety == 0){
 		GameOver();
 	}
-	
-	DrawSatietyBar();
 }
 
 void pet_increaseSatiety(void){
-	if (satiety < 5){
+	if (satiety < 4){
 		satiety++;
 	}
 	DrawSatietyBar();
 }
 
 void pet_decreaseHappiness(void){
-	happiness--;
+	happiness--;	
+	DrawHappinessBar();
 	
 	if (happiness == 0){
 		GameOver();
+		
 	}
-	
-	DrawHappinessBar();
 }
 
 void pet_increaseHappiness(void){
-	if (happiness < 5){
+	if (happiness < 4){
 		happiness++;
 	}
 	DrawHappinessBar();
@@ -65,12 +74,14 @@ void DrawAgeBar(int8_t hours, int8_t minutes, int8_t seconds){
 void DrawSatietyBar(void){
 	char str[16];
 	sprintf(str, "SATIENESS: %02d", satiety);
+	//DrawAnotherGhost(satiety)
 	GUI_Text(125, 9, (uint8_t *) str, White, Black);
 }
 
 void DrawHappinessBar(void){
 	char str[16];
 	sprintf(str, "HAPPINESS: %02d", happiness);
+	//DrawAnotherHungerPacman(satiety)
 	GUI_Text(125, 36, (uint8_t *) str, White, Black);
 }
 
@@ -110,6 +121,7 @@ void pet_play(void){
 
 	if(happiness < 5){
 		happiness++;
+		DrawHappinessBar();
 	}
 
 	enable_timer(0);
@@ -125,6 +137,7 @@ void pet_snack(void){
 
 	if(satiety < 5){
 		satiety++;
+		DrawSatietyBar();
 	}
 
 	enable_timer(0);
@@ -140,6 +153,7 @@ void GameOver(void){
 	pet_animation_death(PET_STARTING_X, PET_STARTING_Y);
 	LCD_SetBackground(Black);
 	GUI_Text(103, 272, (uint8_t *) "RESET", White, Blue);
+	gameCanRestart(1);
 }
 
 void DrawBackground(void){
@@ -227,9 +241,9 @@ void DrawBackground(void){
 	LCD_DrawLine(0, 319, 239, 319, Blue);
 
 	//Linee verticali
-	LCD_DrawLine(0, 3, 0, 316, Blue);
-	LCD_DrawLine(1, 3, 1, 316, Blue);
-	LCD_DrawLine(2, 3, 2, 316, Blue);
+	LCD_DrawLine(0, 2, 0, 316, Blue);
+	LCD_DrawLine(1, 2, 1, 316, Blue);
+	LCD_DrawLine(2, 2, 2, 316, Blue);
 
 	LCD_DrawLine(7, 61, 7, 217, Blue);
 	LCD_DrawLine(8, 61, 8, 217, Blue);
@@ -255,7 +269,7 @@ void DrawBackground(void){
 	LCD_DrawLine(94, 61, 94, 178, Blue);
 	LCD_DrawLine(95, 61, 95, 178, Blue);
 
-	LCD_DrawLine(100, 68, 100, 171, Blue); //non questa
+	LCD_DrawLine(100, 68, 100, 171, Blue);
 	LCD_DrawLine(101, 68, 101, 171, Blue);
 	LCD_DrawLine(102, 68, 102, 171, Blue);
 
@@ -317,7 +331,7 @@ void DrawBackground(void){
 	LCD_DrawLine(231, 228, 231, 279, Blue);
 	LCD_DrawLine(232, 228, 232, 279, Blue);
 
-	LCD_DrawLine(237, 3, 237, 316, Blue);
-	LCD_DrawLine(238, 3, 238, 316, Blue);
-	LCD_DrawLine(239, 3, 239, 316, Blue);
+	LCD_DrawLine(237, 2, 237, 316, Blue);
+	LCD_DrawLine(238, 2, 238, 316, Blue);
+	LCD_DrawLine(239, 2, 239, 316, Blue);
 }

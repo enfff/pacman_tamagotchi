@@ -21,6 +21,8 @@ void pet_decreaseSatiety(void);
 void pet_decreaseHappiness(void);
 void pet_increaseSatiety(void);
 void pet_increaseHappiness(void);
+int gameCanRestart(int value);
+
 #endif 
 /*********************************************************************************************************
       END FILE

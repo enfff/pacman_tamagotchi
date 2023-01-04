@@ -9,3 +9,4 @@
 .\irq_rit.o: C:\Users\Enf\AppData\Local\Arm\Packs\Keil\LPC1700_DFP\2.7.1\Device\Include\system_LPC17xx.h
 .\irq_rit.o: RIT\RIT.h
 .\irq_rit.o: RIT\../tamagotchi/tamagotchi.h
+.\irq_rit.o: RIT\../timer/timer.h
