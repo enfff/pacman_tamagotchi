@@ -13,16 +13,17 @@ static uint8_t happiness;
 static int canGameRestart_flag;
 	
 void Tamagotchi_Init(void){
-	satiety = 2;
-	happiness = 2;
+	satiety = 5;
+	happiness = 5;
 	canGameRestart_flag = 0;
-	
 	DrawBackground();
-	DrawSatietyBar();
-	DrawHappinessBar();
 	DrawPlayButton('N');
 	DrawSnackButton('N');
-	
+	GUI_Text(12, 22, (uint8_t *) "HAPPINESS:" , White, Black);
+	stats_init_satiety_ghosts();
+	GUI_Text(12, 40, (uint8_t *) "SATIETY:" , White, Black);
+	stats_init_happiness_pacman();
+	GUI_Text(12, 4, (uint8_t *) "AGE:" , White, Black);
 }
 
 int gameCanRestart(int value){
@@ -34,7 +35,7 @@ int gameCanRestart(int value){
 
 int pet_decreaseSatiety(void){
 	satiety--;
-	DrawSatietyBar();
+	stats_satiety_ghosts('D', satiety);
 	
 	if (satiety == 0){
 		GameOver();
@@ -46,45 +47,30 @@ int pet_decreaseSatiety(void){
 void pet_increaseSatiety(void){
 	if (satiety < 4){
 		satiety++;
+		stats_satiety_ghosts('I', satiety);
 	}
-	DrawSatietyBar();
 }
 
 void pet_decreaseHappiness(void){
 	happiness--;	
-	DrawHappinessBar();
+	stats_happiness_pacman('D', happiness);
 	
 	if (happiness == 0){
 		GameOver();
-		
 	}
 }
 
 void pet_increaseHappiness(void){
 	if (happiness < 4){
 		happiness++;
+		stats_happiness_pacman('I', happiness);
 	}
-	DrawHappinessBar();
 }
 
 void DrawAgeBar(int8_t hours, int8_t minutes, int8_t seconds){
 	char updatedTime[13];
-	sprintf(updatedTime, "AGE: %02d:%02d:%02d", hours, minutes, seconds);
-	GUI_Text(9, 22, (uint8_t *) updatedTime, White, Black);
-}
-
-void DrawSatietyBar(void){
-	char str[16];
-	sprintf(str, "SATIENESS: %02d", satiety);
-	//DrawAnotherGhost(satiety)
-	GUI_Text(125, 9, (uint8_t *) str, White, Black);
-}
-
-void DrawHappinessBar(void){
-	char str[16];
-	sprintf(str, "HAPPINESS: %02d", happiness);
-	//DrawAnotherHungerPacman(satiety)
-	GUI_Text(125, 36, (uint8_t *) str, White, Black);
+	sprintf(updatedTime, "%02d:%02d:%02d", hours, minutes, seconds);
+	GUI_Text(149, 4, (uint8_t *) updatedTime, White, Black);
 }
 
 void DrawPlayButton(uint8_t option){
@@ -123,7 +109,7 @@ void DrawResetButton(uint8_t option){
 		GUI_Text(103, 272, (uint8_t *) "RESET", White, Blue);
 		break;
 	case 'N':
-		GUI_Text(103, 272, (uint8_t *) "RESET", White, Black);
+		GUI_Text(103, 272, (uint8_t *) "RESET", Black, Black);
 	default:
 		break;
 	}
@@ -137,7 +123,7 @@ void pet_play(void){
 
 	if(happiness < 5){
 		happiness++;
-		DrawHappinessBar();
+		stats_happiness_pacman('I', happiness);
 	}
 
 	enable_timer(0);
@@ -153,7 +139,7 @@ void pet_snack(void){
 
 	if(satiety < 5){
 		satiety++;
-		DrawSatietyBar();
+		stats_satiety_ghosts('I', satiety);
 	}
 
 	enable_timer(0);
@@ -260,9 +246,9 @@ void DrawBackground(void){
 	LCD_DrawLine(0, 319, 239, 319, Blue);
 
 	//Linee verticali
-	LCD_DrawLine(0, 2, 0, 316, Blue);
-	LCD_DrawLine(1, 2, 1, 316, Blue);
-	LCD_DrawLine(2, 2, 2, 316, Blue);
+	LCD_DrawLine(0, 1, 0, 316, Blue);
+	LCD_DrawLine(1, 1, 1, 316, Blue);
+	LCD_DrawLine(2, 1, 2, 316, Blue);
 
 	LCD_DrawLine(7, 61, 7, 217, Blue);
 	LCD_DrawLine(8, 61, 8, 217, Blue);

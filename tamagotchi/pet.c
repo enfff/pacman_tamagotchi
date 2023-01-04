@@ -402,7 +402,7 @@ void draw_something(int x_offset, int y_offset, uint16_t* pixel_array, int SIZE)
 	}
 }
 
-void stats_init_satiety_ghosts(){
+void stats_init_satiety_ghosts(void){
 	int k;
 	int local_offset = 20;
 	
@@ -411,7 +411,7 @@ void stats_init_satiety_ghosts(){
 	}
 }
 
-void stats_init_happiness_pacman(){
+void stats_init_happiness_pacman(void){
 	int k;
 	int local_offset = 20;
 	

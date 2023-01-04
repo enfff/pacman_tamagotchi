@@ -67,6 +67,7 @@ void TIMER1_IRQHandler (void)
 	static int8_t seconds=0;
 	static int8_t minutes=0;
 	static int8_t hours=0;
+	
 	static int HoChiamatoGameOver = 0;
 	seconds++;
 	
@@ -87,6 +88,10 @@ void TIMER1_IRQHandler (void)
 		
 		if(HoChiamatoGameOver == 0){
 			pet_decreaseHappiness();
+		} else {
+			seconds = 0;		// è stata chiamata la GameOver quindi resetto il conteggio
+			minutes = 0;
+			hours = 0;
 		}
 	
 		reset_countdown();
