@@ -73,7 +73,7 @@ void reset_timer( uint8_t timer_num )
 	regVal |= 0x02;
 	LPC_TIM0->TCR = regVal;
   }
-  else
+  else 
   {
 	regVal = LPC_TIM1->TCR;
 	regVal |= 0x02;
