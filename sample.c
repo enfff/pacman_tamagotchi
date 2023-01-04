@@ -25,7 +25,7 @@
 #include "GLCD/GLCD.h" 
 #include "timer/timer.h"
 #include "tamagotchi/tamagotchi.h"
-#include "tamagotchi/pet.h"
+#include "tamagotchi/pet.h" // RIMUOVI
 #include "joystick/joystick.h"
 #include "RIT/RIT.h"
 
@@ -50,13 +50,14 @@ int main(void)
 	
 	joystick_init();
 	init_RIT(0x4C4B40);										// 50ms, 	100MHz
-	enable_RIT();
-	NVIC_SetPriority(RIT_IRQn, 1);				// stats, age, priorità 1
 	
-	enable_timer(0);											// handles idle animations
-	NVIC_SetPriority(TIMER0_IRQn, 2);			// stats, age, priorità 2
-	enable_timer(1);											// handles age and stats
-	NVIC_SetPriority(TIMER1_IRQn, 0);			// stats, age, priorità 1
+	enable_RIT();
+	NVIC_SetPriority(RIT_IRQn, 0);				// handles joystick, priority 0
+	enable_timer(0);											
+	NVIC_SetPriority(TIMER0_IRQn, 2);			// handles idle animations, priority 2
+	enable_timer(1);											
+	NVIC_SetPriority(TIMER1_IRQn, 1);			// handles age and stats, priority 1
+	
 	
 	LPC_SC->PCON |= 0x1;									/* power-down	mode										*/
 	LPC_SC->PCON &= ~(0x2);						
