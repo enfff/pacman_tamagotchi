@@ -69,7 +69,7 @@ uint16_t pet_stance_idle_bocca_chiusa[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 0, 0, 0, 0, 0, 0, 0, 0, 0, 65120, 65120, 65120, 65120, 65120, 65120, 65120, 65120, 65120, 65120, 65120, 65120, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 0,0,0,0,0,0,0,0,0,0,0,0,65120,65120,65120,65120,65120,65120,0,0,0,0,0,0,0,0,0,0,0,0};
 
-uint16_t pet_play_stance1[] = {0, 0, 0, 0, 0, 8479, 8479, 8479, 8479, 8479, 0, 0, 0, 0, 0,
+uint16_t pet_ghost[] = {0, 0, 0, 0, 0, 8479, 8479, 8479, 8479, 8479, 0, 0, 0, 0, 0,
 0, 0, 0, 8479, 8479, 8479, 8479, 8479, 8479, 8479, 8479, 8479, 0, 0, 0,
 0, 0, 8479, 8479, 8479, 8479, 8479, 8479, 8479, 8479, 8479, 8479, 8479, 0, 0,
 0, 8479, 8479, 8479, 8479, 8479, 8479, 8479, 8479, 8479, 8479, 8479, 8479, 8479, 0,
@@ -85,7 +85,7 @@ uint16_t pet_play_stance1[] = {0, 0, 0, 0, 0, 8479, 8479, 8479, 8479, 8479, 0, 0
 8479, 8479, 0, 8479, 8479, 8479, 0, 0, 0, 8479, 8479, 8479, 0, 8479, 8479,
 8479,0,0,0,8479,8479,0,0,0,8479,8479,0,0,0,8479};
 
-uint16_t pet_snack_stance1[] = {0, 0, 0, 0, 0, 0, 0, 63390, 63390, 0, 0, 0, 0, 0, 0,
+uint16_t snack[] = {0, 0, 0, 0, 0, 0, 0, 63390, 63390, 0, 0, 0, 0, 0, 0,
 0, 0, 0, 0, 0, 0, 0, 63390, 63390, 0, 0, 0, 0, 0, 0,
 0, 0, 0, 0, 19912, 19912, 19912, 63390, 63390, 19912, 19912, 19912, 0, 0, 0,
 0, 0, 19912, 19912, 19912, 19912, 19912, 19912, 19912, 19912, 19912, 19912, 19912, 0, 0,
@@ -389,6 +389,12 @@ uint16_t hunger[] = {0, 0, 0, 0, 0, 0, 65120, 65120, 65120, 65120, 0, 0, 0, 0, 0
 0, 0, 0, 0, 65120, 65120, 65120, 65120, 65120, 65120, 65120, 65120, 0, 0, 0, 0,
 0,0,0,0,0,0,65120,65120,65120,65120,0,0,0,0,0,0};
 
+
+// User defined variables *****************************************************
+
+# define PET_STARTING_X 185
+# define PET_STARTING_Y 105
+
 /* User Functions ---------------------------------------------------------------*/
 
 void draw_something(int x_offset, int y_offset, uint16_t* pixel_array, int SIZE){
@@ -459,12 +465,34 @@ void stats_happiness_pacman(uint8_t option, uint8_t new_amount){
 }
 
 
-void pet_animation_idle1(int x_offset, int y_offset){
-	draw_something(x_offset, y_offset, pet_stance_idle_bocca_aperta, PETSIZE);
+void pet_animation_idle1(void){
+	draw_something(PET_STARTING_X, PET_STARTING_Y, pet_stance_idle_bocca_aperta, PETSIZE);
 }
 
-void pet_animation_idle2(int x_offset, int y_offset){
-	draw_something(x_offset, y_offset, pet_stance_idle_bocca_chiusa, PETSIZE);
+void pet_animation_idle2(void){
+	draw_something(PET_STARTING_X, PET_STARTING_Y, pet_stance_idle_bocca_chiusa, PETSIZE);
+}
+
+void draw_pet_snack(void){
+	draw_something(192, 202, snack, SNACKSIZE);
+}
+
+void draw_pet_play(void){
+	draw_something(192, 202, pet_ghost, SNACKSIZE);
+}
+
+void pet_animation_pursuit1(uint8_t k){
+	draw_something(PET_STARTING_X, PET_STARTING_Y + (k)*PETSIZE, pet_stance_idle_bocca_aperta, PETSIZE);
+	draw_something(PET_STARTING_X, PET_STARTING_Y + (k-1)*PETSIZE, black_matrix, PETSIZE);
+}
+
+void pet_animation_pursuit2(uint8_t k){
+	draw_something(PET_STARTING_X, PET_STARTING_Y + (k)*PETSIZE, pet_stance_idle_bocca_chiusa, PETSIZE);
+	draw_something(PET_STARTING_X, PET_STARTING_Y + (k-1)*PETSIZE, black_matrix, PETSIZE);
+}
+
+void pet_clear_animation_pursuit(void){
+	draw_something(PET_STARTING_X, PET_STARTING_Y + (3)*PETSIZE, black_matrix, PETSIZE);
 }
 
 void pet_animation_death(int x_offset, int y_offset){
@@ -475,44 +503,4 @@ void pet_animation_death(int x_offset, int y_offset){
 	draw_something(x_offset, y_offset, pet_death4, PETSIZE);
 	draw_something(x_offset, y_offset, pet_death5, PETSIZE);
 	draw_something(x_offset, y_offset, pet_death6, PETSIZE);
-}
-
-
-void pet_animation_snack(int x_offset, int y_offset){
-	// disegna lo sneck a partire dalla posizione (fissa) 202, 192
-	// disegna pacman che si sposta verso destra di 30 pixel un totale di 3 volte
-	// ad ogni iterazione ricopre di nero il passo precedente
-	// x_offset, y_offset devono essere la posizione iniziale del pet
-	
-	int k;
-	
-	draw_something(192, 202, pet_snack_stance1, SNACKSIZE);														//verrà sovrascritta dopo
-	
-	for(k=1; k<4; k++){
-		if(k == 2)	{ draw_something(x_offset, y_offset + (k)*PETSIZE, pet_stance_idle_bocca_chiusa, PETSIZE);	}			//ignora la triste stesura del codice sono stanco
-		else 				{	draw_something(x_offset, y_offset + (k)*PETSIZE, pet_stance_idle_bocca_aperta, PETSIZE);	}					
-		draw_something(x_offset, y_offset + (k-1)*PETSIZE, black_matrix, PETSIZE);		//cancella frame a sinistra
-	}
-	
-	draw_something(x_offset, y_offset + (3)*PETSIZE, black_matrix, PETSIZE);				//cancella l'ultimo frame disegnato
-	
-}
-
-void pet_animation_play(int x_offset, int y_offset){
-	// disegna il fantasmino a partire dalla posizione (fissa) 202, 192
-	// disegna pacman che si sposta verso destra di 30 pixel un totale di 3 volte
-	// ad ogni iterazione ricopre di nero il passo precedente
-	//x_offset, y_offset devono essere la posizione iniziale del pet
-	
-	int k;
-	
-	draw_something(192, 202, pet_play_stance1, SNACKSIZE);														//verrà sovrascritta dopo
-	
-	for(k=1; k<4; k++){
-		if(k == 2)	{ draw_something(x_offset, y_offset + (k)*PETSIZE, pet_stance_idle_bocca_chiusa, PETSIZE);	}			//ignora la triste stesura del codice sono stanco
-		else 				{	draw_something(x_offset, y_offset + (k)*PETSIZE, pet_stance_idle_bocca_aperta, PETSIZE);	}					
-		draw_something(x_offset, y_offset + (k-1)*PETSIZE, black_matrix, PETSIZE);		//cancella frame a sinistra
-	}
-	
-	draw_something(x_offset, y_offset + (3)*PETSIZE, black_matrix, PETSIZE);				//cancella l'ultimo frame disegnato
 }

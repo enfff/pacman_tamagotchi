@@ -8,8 +8,6 @@
 void Tamagotchi_Init(void);
 
 void DrawBackground(void);
-// void DrawSatietyBar(void);
-// void DrawHappinessBar(void);
 void DrawAgeBar(int8_t hours, int8_t minutes, int8_t seconds);
 void stats_satiety_ghosts(uint8_t option, uint8_t new_amount);
 void stats_happiness_pacman(uint8_t option, uint8_t new_amount);

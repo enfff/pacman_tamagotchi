@@ -17,11 +17,6 @@
 #include "../tamagotchi/tamagotchi.h"
 
 
-// User defined variables *****************************************************
-
-# define PET_STARTING_X 185
-# define PET_STARTING_Y 105
-
 /******************************************************************************
 ** Function name:		Timer0_IRQHandler
 **
@@ -32,20 +27,65 @@
 **
 ******************************************************************************/
 
+static int HoChiamatoGameOver = 0;
+static uint8_t animation_type = 'I';				// 0 -> idle, 1 -> pet play, 2 -> pet snack
+
 void TIMER0_IRQHandler (void)
 {
-	uint8_t software_count = 0;
+	static int8_t software_count = 0;
+	static int8_t frame_number = 0;
 	software_count++;
 	
-	switch(software_count){
-		case 1:
-			pet_animation_idle1(PET_STARTING_X, PET_STARTING_Y);
-		case 2:
-			pet_animation_idle2(PET_STARTING_X, PET_STARTING_Y);
-			software_count = 0;
-		default:
+	animation_type = get_animation_type();
+	
+	if(HoChiamatoGameOver == 0){
+		switch(animation_type){
+			case 'I':	// idle
+				if(software_count % 2 == 0)	{ pet_animation_idle1(); } // pacman bocca chiusa			
+				else 												{ pet_animation_idle2(); } // pacman bocca aperta
+				break;
+			case 'P':	// play (disegna fantasmino spaventato)
+				if(frame_number == 0){
+					frame_number++;
+					draw_pet_play();
+				} else if(frame_number == 1) {
+					frame_number++;
+					pet_animation_pursuit2(frame_number - 1);
+				} else if(frame_number == 2) {
+					frame_number++;
+					pet_animation_pursuit1(frame_number - 1);
+				} else if(frame_number == 3) {
+					frame_number++;
+					pet_animation_pursuit2(frame_number - 1);
+					set_animation_type('I');
+					frame_number=0;
+					pet_clear_animation_pursuit();
+				}
 			break;
+			case 'S': // snack (disegna fragola)
+				if(frame_number == 0){
+					frame_number++;
+					draw_pet_snack();
+				} else if(frame_number == 1) {
+					frame_number++;
+					pet_animation_pursuit2(frame_number - 1);
+				} else if(frame_number == 2) {
+					frame_number++;
+					pet_animation_pursuit1(frame_number - 1);
+				} else if(frame_number == 3) {
+					frame_number++;
+					pet_animation_pursuit2(frame_number - 1);
+					set_animation_type('I');
+					frame_number=0;
+					pet_clear_animation_pursuit();
+				}
+				break;
+			default:
+				break;
+		}
 	}
+	
+	// reset_timer(0); // ricomincia a contare da 0;
 	
   LPC_TIM0->IR |= 1;			/* clear interrupt flag */
   return;
@@ -68,7 +108,6 @@ void TIMER1_IRQHandler (void)
 	static int8_t minutes=0;
 	static int8_t hours=0;
 	
-	static int HoChiamatoGameOver = 0;
 	seconds++;
 	
 	if (seconds % 60 == 0 && seconds >= 1){
@@ -85,7 +124,6 @@ void TIMER1_IRQHandler (void)
 	
 	if(decrease_countdown() % 5 == 0){
 		HoChiamatoGameOver = pet_decreaseSatiety();
-		
 		if(HoChiamatoGameOver == 0){
 			pet_decreaseHappiness();
 		} else {

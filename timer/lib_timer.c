@@ -157,7 +157,7 @@ uint32_t init_timer ( uint8_t timer_num, uint32_t TimerInterval )
 }
 
 // <-------------------------------------------------------------------------->
-
+static uint8_t animation_type = 'I';
 static int statsCountdown = 5;
 
 int decrease_countdown(void){
@@ -167,6 +167,14 @@ int decrease_countdown(void){
 
 void reset_countdown(void){
 	statsCountdown = 5;
+}
+
+void set_animation_type(uint8_t value){
+	animation_type = value;
+}
+
+uint8_t get_animation_type(void){
+	return animation_type;
 }
 
 /******************************************************************************

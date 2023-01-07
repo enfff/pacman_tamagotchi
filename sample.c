@@ -45,18 +45,19 @@ int main(void)
 	
 	Tamagotchi_Init();
 	
-	init_timer(0, 0xBEBC20);							// 500ms, 25Mhz, handles idle animations
-	init_timer(1, 0x17D7840);							// 1s,   	25Mhz, handles age and stats
+	NVIC_SetPriority(RIT_IRQn, 0);				// handles joystick, priority 0
+	NVIC_SetPriority(TIMER0_IRQn, 2);			// handles all animations, priority 2
+	NVIC_SetPriority(TIMER1_IRQn, 1);			// handles age and stats, priority 1
+	
+	init_timer(0, 0x5F5E10);							// 250ms, 25MHz, handles animations
+	init_timer(1, 0x17D7840);							// 1s,   	25MHz, handles age and stats
 	
 	joystick_init();
 	init_RIT(0x4C4B40);										// 50ms, 	100MHz
 	
 	enable_RIT();
-	NVIC_SetPriority(RIT_IRQn, 0);				// handles joystick, priority 0
 	enable_timer(0);											
-	NVIC_SetPriority(TIMER0_IRQn, 2);			// handles idle animations, priority 2
 	enable_timer(1);											
-	NVIC_SetPriority(TIMER1_IRQn, 1);			// handles age and stats, priority 1
 	
 	
 	LPC_SC->PCON |= 0x1;									/* power-down	mode										*/

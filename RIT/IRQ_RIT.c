@@ -61,7 +61,6 @@ void RIT_IRQHandler (void)
 			enable_RIT();
 			enable_timer(0);
 			enable_timer(1);
-
 		}
 	
 		reset_RIT();

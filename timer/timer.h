@@ -9,6 +9,9 @@
 *********************************************************************************************************/
 #ifndef __TIMER_H
 #define __TIMER_H
+
+/* user defined variables */
+
 /* init_timer.c */
 extern uint32_t init_timer( uint8_t timer_num, uint32_t timerInterval );
 extern void enable_timer( uint8_t timer_num );
@@ -21,6 +24,8 @@ extern void TIMER1_IRQHandler (void);
 /* User defined functions */
 int decrease_countdown(void);
 void reset_countdown(void);
+void set_animation_type(uint8_t value);
+uint8_t get_animation_type(void);
 
 #endif /* end __TIMER_H */
 /*****************************************************************************

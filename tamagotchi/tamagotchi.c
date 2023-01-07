@@ -19,11 +19,11 @@ void Tamagotchi_Init(void){
 	DrawBackground();
 	DrawPlayButton('N');
 	DrawSnackButton('N');
-	GUI_Text(12, 22, (uint8_t *) "HAPPINESS:" , White, Black);
+	GUI_Text(24, 22, (uint8_t *) "HAPPINESS:" , White, Black);
 	stats_init_satiety_ghosts();
-	GUI_Text(12, 40, (uint8_t *) "SATIETY:" , White, Black);
+	GUI_Text(24, 40, (uint8_t *) "SATIETY:" , White, Black);
 	stats_init_happiness_pacman();
-	GUI_Text(12, 4, (uint8_t *) "AGE:" , White, Black);
+	GUI_Text(24, 4, (uint8_t *) "AGE:" , White, Black);
 }
 
 int gameCanRestart(int value){
@@ -117,32 +117,28 @@ void DrawResetButton(uint8_t option){
 
 void pet_play(void){
 	disable_timer(1);
-	disable_timer(0);
-	
-	pet_animation_play(PET_STARTING_X, PET_STARTING_Y);
 
+	set_animation_type('P');
+	
 	if(happiness < 5){
 		happiness++;
 		stats_happiness_pacman('I', happiness);
 	}
 
-	enable_timer(0);
 	enable_timer(1);
 	reset_countdown();			// satiety and happiness countdown
 }
 
 void pet_snack(void){
 	disable_timer(1);
-	disable_timer(0);
-	
-	pet_animation_snack(PET_STARTING_X, PET_STARTING_Y);
+
+	set_animation_type('S');
 
 	if(satiety < 5){
 		satiety++;
 		stats_satiety_ghosts('I', satiety);
 	}
 
-	enable_timer(0);
 	enable_timer(1);
 	reset_countdown();			// satiety and happiness countdown
 }
