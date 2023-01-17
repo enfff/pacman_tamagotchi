@@ -28,6 +28,7 @@
 #include "tamagotchi/pet.h" // RIMUOVI
 #include "joystick/joystick.h"
 #include "RIT/RIT.h"
+#include "TouchPanel/TouchPanel.h"
 
 #define SIMULATOR 1
 
@@ -41,13 +42,16 @@ extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the emul
 int main(void)
 {
   SystemInit();  												/* System Initialization (i.e., PLL)  */
-  LCD_Initialization();
+	LCD_Initialization();
 	
+	TP_Init();
+	TouchPanel_Calibrate();
+
 	Tamagotchi_Init();
 	
 	NVIC_SetPriority(RIT_IRQn, 0);				// handles joystick, priority 0
 	NVIC_SetPriority(TIMER0_IRQn, 2);			// handles all animations, priority 2
-	NVIC_SetPriority(TIMER1_IRQn, 1);			// handles age and stats, priority 1
+	NVIC_SetPriority(TIMER1_IRQn, 1);			//9000 handles age and stats, priority 1
 	
 	init_timer(0, 0x5F5E10);							// 250ms, 25MHz, handles animations
 	init_timer(1, 0x17D7840);							// 1s,   	25MHz, handles age and stats
@@ -58,7 +62,6 @@ int main(void)
 	enable_RIT();
 	enable_timer(0);											
 	enable_timer(1);											
-	
 	
 	LPC_SC->PCON |= 0x1;									/* power-down	mode										*/
 	LPC_SC->PCON &= ~(0x2);						

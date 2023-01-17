@@ -12,10 +12,14 @@
 
 #include "lpc17xx.h"
 #include "timer.h"
-#include "../GLCD/GLCD.h" 
+#include "../GLCD/GLCD.h"
+#include "../TouchPanel/TouchPanel.h"
+
 #include "../tamagotchi/pet.h"
 #include "../tamagotchi/tamagotchi.h"
 
+# define PET_STARTING_X 185
+# define PET_STARTING_Y 105
 
 /******************************************************************************
 ** Function name:		Timer0_IRQHandler
@@ -27,8 +31,9 @@
 **
 ******************************************************************************/
 
-static int HoChiamatoGameOver = 0;
-static uint8_t animation_type = 'I';				// 0 -> idle, 1 -> pet play, 2 -> pet snack
+uint8_t HoChiamatoGameOver = 0;
+
+static uint8_t animation_type = 'I';
 
 void TIMER0_IRQHandler (void)
 {
@@ -41,10 +46,20 @@ void TIMER0_IRQHandler (void)
 	if(HoChiamatoGameOver == 0){
 		switch(animation_type){
 			case 'I':	// idle
-				if(software_count % 2 == 0)	{ pet_animation_idle1(); } // pacman bocca chiusa			
-				else 												{ pet_animation_idle2(); } // pacman bocca aperta
+				if(HoChiamatoGameOver == 1){
+					break;
+				}
+				if(software_count % 2 == 0 && HoChiamatoGameOver == 0){
+					pet_animation_idle1();
+				} // pacman bocca chiusa			
+				else if (software_count % 2 != 0 && HoChiamatoGameOver == 0){
+					pet_animation_idle2();
+				} // pacman bocca aperta
 				break;
 			case 'P':	// play (disegna fantasmino spaventato)
+				if(HoChiamatoGameOver == 1){
+					break;
+				}
 				if(frame_number == 0){
 					frame_number++;
 					draw_pet_play();
@@ -63,6 +78,9 @@ void TIMER0_IRQHandler (void)
 				}
 			break;
 			case 'S': // snack (disegna fragola)
+				if(HoChiamatoGameOver == 1){
+					break;
+				}
 				if(frame_number == 0){
 					frame_number++;
 					draw_pet_snack();
@@ -80,8 +98,73 @@ void TIMER0_IRQHandler (void)
 					pet_clear_animation_pursuit();
 				}
 				break;
+			case 'T': // animazione di petting
+				if(HoChiamatoGameOver == 1){
+					break;
+				}
+				if(frame_number == 0){
+					disable_timer(1); //gestisce age e stats
+					frame_number++;
+					pet_animation_pet1(PET_STARTING_X, PET_STARTING_Y);
+				} else if(frame_number == 1) {
+					frame_number++;
+					pet_animation_pet2(PET_STARTING_X, PET_STARTING_Y);
+				} else if(frame_number == 2) {
+					frame_number++;
+					pet_animation_pet3(PET_STARTING_X, PET_STARTING_Y);
+				} else if(frame_number == 3){
+					frame_number++;
+					pet_animation_pet4(PET_STARTING_X, PET_STARTING_Y);
+				} else if(frame_number == 4) {
+					frame_number++;
+					pet_animation_pet1(PET_STARTING_X, PET_STARTING_Y);
+			  } else if(frame_number == 5) {
+					frame_number++;
+					pet_animation_pet2(PET_STARTING_X, PET_STARTING_Y);
+				} else if(frame_number == 6) {
+					frame_number++;
+					pet_animation_pet3(PET_STARTING_X, PET_STARTING_Y);
+				} else if(frame_number == 7) {
+					frame_number++;
+					pet_animation_pet4(PET_STARTING_X, PET_STARTING_Y);
+					set_animation_type('I');
+					frame_number=0;
+					pet_increaseHappiness();
+					enable_timer(1);
+					// non c'è bisogno di cancellare l'ultimo frame disegnato perché riprende da idle
+				}
+				break;	
+			case 'D': // death
+				if(HoChiamatoGameOver == 1){
+					break;
+				}
+				if(frame_number == 0){
+					frame_number++;
+					pet_animation_death1(PET_STARTING_X, PET_STARTING_Y);
+				} else if(frame_number == 1) {
+					frame_number++;
+					pet_animation_death2(PET_STARTING_X, PET_STARTING_Y);
+				} else if(frame_number == 2) {
+					frame_number++;
+					pet_animation_death3(PET_STARTING_X, PET_STARTING_Y);
+				} else if(frame_number == 3) {
+					frame_number++;
+					pet_animation_death4(PET_STARTING_X, PET_STARTING_Y);
+				} else if(frame_number == 4) {
+					frame_number++;
+					pet_animation_death5(PET_STARTING_X, PET_STARTING_Y);
+				} else if(frame_number == 5) {
+					frame_number++;
+					pet_animation_death6(PET_STARTING_X, PET_STARTING_Y);
+				} else if(frame_number == 6) {
+					frame_number=0;
+					disable_timer(0);
+					set_animation_type('I');
+					reset_timer(0);
+					canProceed(1);		// can proceed with GameOver()
+				}
 			default:
-				break;
+				break;		
 		}
 	}
 	
@@ -138,6 +221,11 @@ void TIMER1_IRQHandler (void)
 	}
 	
   LPC_TIM1->IR = 1;			/* clear interrupt flag */
+  return;
+}
+
+void TIMER2_IRQHandler (void){
+	LPC_TIM2->IR = 1;			/* clear interrupt flag */
   return;
 }
 

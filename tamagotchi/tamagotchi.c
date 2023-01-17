@@ -4,6 +4,7 @@
 #include "pet.h"
 #include "../GLCD/GLCD.h"
 #include "../timer/timer.h"
+#include "../TouchPanel/TouchPanel.h"
 
 # define PET_STARTING_X 185
 # define PET_STARTING_Y 105
@@ -11,25 +12,36 @@
 static uint8_t satiety;
 static uint8_t happiness;
 static int canGameRestart_flag;
+static int canProceed_flag;
+
+extern uint8_t HoChiamatoGameOver;
 	
 void Tamagotchi_Init(void){
 	satiety = 5;
 	happiness = 5;
 	canGameRestart_flag = 0;
+	canProceed_flag = 0;
+	HoChiamatoGameOver = 0;
+	
 	DrawBackground();
 	DrawPlayButton('N');
 	DrawSnackButton('N');
-	GUI_Text(24, 22, (uint8_t *) "HAPPINESS:" , White, Black);
+	GUI_Text(24, 22, (uint8_t *) "SATIETY:" , White, Black);
 	stats_init_satiety_ghosts();
-	GUI_Text(24, 40, (uint8_t *) "SATIETY:" , White, Black);
+	GUI_Text(24, 40, (uint8_t *) "HAPPINESS:" , White, Black);
 	stats_init_happiness_pacman();
 	GUI_Text(24, 4, (uint8_t *) "AGE:" , White, Black);
 }
 
+
+// fa l'or logico tra flag e value. La flag viene alla fine settata nell'animazione di morte;
+int canProceed(int value){
+	canProceed_flag |= value;
+	return canProceed_flag;
+}
+// fa l'or logico tra flag e value. Flag viene settata in GameOver();
 int gameCanRestart(int value){
-	// fa l'or logico tra flag e value. Flag viene settata in GameOver();
 	canGameRestart_flag |= value;
-	
 	return canGameRestart_flag;
 }
 
@@ -45,7 +57,7 @@ int pet_decreaseSatiety(void){
 }
 
 void pet_increaseSatiety(void){
-	if (satiety < 4){
+	if (satiety < 5){
 		satiety++;
 		stats_satiety_ghosts('I', satiety);
 	}
@@ -61,7 +73,7 @@ void pet_decreaseHappiness(void){
 }
 
 void pet_increaseHappiness(void){
-	if (happiness < 4){
+	if (happiness < 5){
 		happiness++;
 		stats_happiness_pacman('I', happiness);
 	}
@@ -119,12 +131,8 @@ void pet_play(void){
 	disable_timer(1);
 
 	set_animation_type('P');
+	pet_increaseHappiness();
 	
-	if(happiness < 5){
-		happiness++;
-		stats_happiness_pacman('I', happiness);
-	}
-
 	enable_timer(1);
 	reset_countdown();			// satiety and happiness countdown
 }
@@ -133,33 +141,35 @@ void pet_snack(void){
 	disable_timer(1);
 
 	set_animation_type('S');
-
-	if(satiety < 5){
-		satiety++;
-		stats_satiety_ghosts('I', satiety);
-	}
+	pet_increaseSatiety();
 
 	enable_timer(1);
 	reset_countdown();			// satiety and happiness countdown
 }
 
 void GameOver(void){
-	disable_timer(0);
-	disable_timer(1);
 	
-	reset_timer(0);
+	disable_timer(1);				// age
 	reset_timer(1);
 	
-	GUI_Text(85, 100, (uint8_t *) "GAME OVER", Red, Black);
-	pet_animation_death(PET_STARTING_X, PET_STARTING_Y);
+	set_animation_type('D');
+	
+	while(canProceed(0) == 1){
+		DelayUS(1);
+	}
+	
 	LCD_SetBackground(Black);
+	
+	GUI_Text(85, 100, (uint8_t *) "GAME OVER", Red, Black);
+	
 	DrawResetButton('S');
 	gameCanRestart(1);
 }
 
+
 void DrawBackground(void){
 	// Avrei dovuto implementare una funzione per disegnare le righe spesse...
-	
+	LCD_Clear(Black);
 	//Linee orizzontali
 	LCD_DrawLine(0, 0, 239, 0, Blue);
 	LCD_DrawLine(0, 1, 239, 1, Blue);

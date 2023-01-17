@@ -11,6 +11,7 @@
 #include "RIT.h"
 #include "../tamagotchi/tamagotchi.h"
 #include "../timer/timer.h"
+#include "../TouchPanel/TouchPanel.h"
 
 /******************************************************************************
 ** Function name:		RIT_IRQHandler
@@ -21,6 +22,8 @@
 ** Returned value:		None
 **
 ******************************************************************************/
+
+extern uint8_t HoChiamatoGameOver;
 
 void RIT_IRQHandler (void)
 {					
@@ -48,8 +51,6 @@ void RIT_IRQHandler (void)
 		if(gameCanRestart(0)){				// questa funzione controlla che la flag gameCanRestart_flag
 			
 			disable_RIT();							// contenuta in tamagotchi.c sia messa ad 1; l'argomento 0
-			disable_timer(0);						// è in OR logico con la flag
-			disable_timer(1);
 			
 			reset_RIT();
 			reset_timer(0);
@@ -65,6 +66,7 @@ void RIT_IRQHandler (void)
 	
 		reset_RIT();
   }
+
 	
 	// <----------------------------------------------------->
 	
@@ -85,6 +87,16 @@ void RIT_IRQHandler (void)
   }
 	
 	// <----------------------------------------------------->
+	
+	// Controllo se può partire l'animazione di petting
+	if(HoChiamatoGameOver == 0 && getDisplayPoint(&display, Read_Ads7846(), &matrix )){
+		
+		if(display.y > 135 && display.y < 235 && display.x > 55 && display.x < 155) {
+			set_animation_type('T'); // Petting
+		}
+		
+	}
+
 	
 	disable_RIT();
 	reset_RIT();
