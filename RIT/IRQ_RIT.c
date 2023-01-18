@@ -12,6 +12,13 @@
 #include "../tamagotchi/tamagotchi.h"
 #include "../timer/timer.h"
 #include "../TouchPanel/TouchPanel.h"
+#include "../music/music.h"
+
+#define RIT_SEMIMINIMA 8
+#define RIT_MINIMA 16
+#define RIT_INTERA 32
+
+#define UPTICKS 1
 
 /******************************************************************************
 ** Function name:		RIT_IRQHandler
@@ -23,12 +30,14 @@
 **
 ******************************************************************************/
 
+
 extern uint8_t HoChiamatoGameOver;
+
 
 void RIT_IRQHandler (void)
 {					
 	static int8_t last_key_pressed = 0;			// 0-> select, 1-> left, 2-> right
-	
+
 	if((LPC_GPIO1->FIOPIN & (1<<25)) == 0){ // SELECT
 		
 		if(last_key_pressed == 1){						//Play
@@ -63,6 +72,8 @@ void RIT_IRQHandler (void)
 			enable_timer(0);
 			enable_timer(1);
 		}
+		
+	
 	
 		reset_RIT();
   }
@@ -93,9 +104,11 @@ void RIT_IRQHandler (void)
 		
 		if(display.y > 135 && display.y < 235 && display.x > 55 && display.x < 155) {
 			set_animation_type('T'); // Petting
+			play_pet_sound();
 		}
 		
 	}
+	
 
 	
 	disable_RIT();

@@ -18,6 +18,8 @@
 #include "../tamagotchi/pet.h"
 #include "../tamagotchi/tamagotchi.h"
 
+#include "../RIT/RIT.h"
+
 # define PET_STARTING_X 185
 # define PET_STARTING_Y 105
 
@@ -31,12 +33,21 @@
 **
 ******************************************************************************/
 
+uint16_t SinTable[45] =                                       /* ?????                       */
+{
+    410, 467, 523, 576, 627, 673, 714, 749, 778,
+    799, 813, 819, 817, 807, 789, 764, 732, 694, 
+    650, 602, 550, 495, 438, 381, 324, 270, 217,
+    169, 125, 87 , 55 , 30 , 12 , 2  , 0  , 6  ,   
+    20 , 41 , 70 , 105, 146, 193, 243, 297, 353
+};
+
+
 uint8_t HoChiamatoGameOver = 0;
 
 static uint8_t animation_type = 'I';
 
-void TIMER0_IRQHandler (void)
-{
+void TIMER0_IRQHandler (void){
 	static int8_t software_count = 0;
 	static int8_t frame_number = 0;
 	software_count++;
@@ -104,6 +115,7 @@ void TIMER0_IRQHandler (void)
 				}
 				if(frame_number == 0){
 					disable_timer(1); //gestisce age e stats
+					disable_RIT();
 					frame_number++;
 					pet_animation_pet1(PET_STARTING_X, PET_STARTING_Y);
 				} else if(frame_number == 1) {
@@ -130,6 +142,7 @@ void TIMER0_IRQHandler (void)
 					set_animation_type('I');
 					frame_number=0;
 					pet_increaseHappiness();
+					enable_RIT();
 					enable_timer(1);
 					// non c'è bisogno di cancellare l'ultimo frame disegnato perché riprende da idle
 				}
@@ -168,8 +181,6 @@ void TIMER0_IRQHandler (void)
 		}
 	}
 	
-	// reset_timer(0); // ricomincia a contare da 0;
-	
   LPC_TIM0->IR |= 1;			/* clear interrupt flag */
   return;
 }
@@ -185,8 +196,7 @@ void TIMER0_IRQHandler (void)
 **
 ******************************************************************************/
 
-void TIMER1_IRQHandler (void)
-{
+void TIMER1_IRQHandler (void){
 	static int8_t seconds=0;
 	static int8_t minutes=0;
 	static int8_t hours=0;
@@ -224,11 +234,29 @@ void TIMER1_IRQHandler (void)
   return;
 }
 
-void TIMER2_IRQHandler (void){
-	LPC_TIM2->IR = 1;			/* clear interrupt flag */
+void TIMER2_IRQHandler (void)
+{
+	static int sineticks=0;
+	/* DAC management */	
+	static int currentValue; 
+	currentValue = SinTable[sineticks];
+	/* currentValue -= 410;
+	currentValue /= 1;
+	currentValue += 410; */
+	LPC_DAC->DACR = (currentValue << 6);
+	sineticks++;
+	if(sineticks == 45) sineticks=0;
+	
+  LPC_TIM2->IR = 1;			/* clear interrupt flag */
   return;
 }
 
+void TIMER3_IRQHandler (void)
+{
+	disable_timer(2);
+  LPC_TIM3->IR = 1;			/* clear interrupt flag */
+  return;
+}
 
 
 // <-------------------------------------------------------------------------->

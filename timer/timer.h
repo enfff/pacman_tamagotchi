@@ -9,6 +9,7 @@
 *********************************************************************************************************/
 #ifndef __TIMER_H
 #define __TIMER_H
+#include "lpc17xx.h"
 
 /* user defined variables */
 
@@ -20,6 +21,8 @@ extern void reset_timer( uint8_t timer_num );
 /* IRQ_timer.c */
 extern void TIMER0_IRQHandler (void);
 extern void TIMER1_IRQHandler (void);
+extern void TIMER2_IRQHandler (void);
+extern void TIMER3_IRQHandler (void);
 
 /* User defined functions */
 int decrease_countdown(void);

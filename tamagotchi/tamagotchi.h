@@ -25,6 +25,11 @@ void pet_increaseHappiness(void);
 int gameCanRestart(int value);
 int canProceed(int value);
 
+void play_startup_sound(void);
+void play_death_sound(void);
+void play_eat_sound(void);
+void play_pet_sound(void);
+
 #endif 
 /*********************************************************************************************************
       END FILE
