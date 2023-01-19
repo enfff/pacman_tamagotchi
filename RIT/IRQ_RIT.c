@@ -33,10 +33,9 @@ void RIT_IRQHandler (void)
 	ADC_start_conversion();
 	
 	if((LPC_GPIO1->FIOPIN & (1<<25)) == 0){ // SELECT
-		
-			play_click_sound();
 			
 			if(last_key_pressed == 1){						//Play
+				play_click_sound();
 				disable_RIT();
 				pet_play();
 				DrawPlayButton('N');
@@ -45,6 +44,7 @@ void RIT_IRQHandler (void)
 			}
 			
 			if(last_key_pressed == 2){						//Snack
+				play_click_sound();
 				disable_RIT();
 				pet_snack();
 				DrawSnackButton('N');
