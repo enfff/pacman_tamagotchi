@@ -12,13 +12,13 @@
 
 #include "lpc17xx.h"
 #include "timer.h"
+
 #include "../GLCD/GLCD.h"
 #include "../TouchPanel/TouchPanel.h"
-
 #include "../tamagotchi/pet.h"
 #include "../tamagotchi/tamagotchi.h"
-
 #include "../RIT/RIT.h"
+#include "../adc/adc.h"
 
 # define PET_STARTING_X 185
 # define PET_STARTING_Y 105
@@ -85,6 +85,7 @@ void TIMER0_IRQHandler (void){
 					pet_animation_pursuit2(frame_number - 1);
 					set_animation_type('I');
 					frame_number=0;
+					play_eat_sound();
 					pet_clear_animation_pursuit();
 				}
 			break;
@@ -106,6 +107,7 @@ void TIMER0_IRQHandler (void){
 					pet_animation_pursuit2(frame_number - 1);
 					set_animation_type('I');
 					frame_number=0;
+					play_eat_sound();
 					pet_clear_animation_pursuit();
 				}
 				break;
@@ -144,6 +146,7 @@ void TIMER0_IRQHandler (void){
 					pet_increaseHappiness();
 					enable_RIT();
 					enable_timer(1);
+					play_pet_sound();
 					// non c'è bisogno di cancellare l'ultimo frame disegnato perché riprende da idle
 				}
 				break;	
@@ -180,6 +183,8 @@ void TIMER0_IRQHandler (void){
 				break;		
 		}
 	}
+	
+	// reset_timer(0); // ricomincia a contare da 0;
 	
   LPC_TIM0->IR |= 1;			/* clear interrupt flag */
   return;
@@ -239,10 +244,13 @@ void TIMER2_IRQHandler (void)
 	static int sineticks=0;
 	/* DAC management */	
 	static int currentValue; 
-	currentValue = SinTable[sineticks];
-	/* currentValue -= 410;
-	currentValue /= 1;
-	currentValue += 410; */
+	
+	currentValue = (uint16_t)((float)SinTable[sineticks]*get_volume()/1024*1.25);
+	
+	if(currentValue < 32){
+		currentValue = 0;
+	}
+	
 	LPC_DAC->DACR = (currentValue << 6);
 	sineticks++;
 	if(sineticks == 45) sineticks=0;

@@ -6,6 +6,7 @@
 #include "../timer/timer.h"
 #include "../TouchPanel/TouchPanel.h"
 #include "../RIT/RIT.h"
+#include "../adc/adc.h"
 
 # define PET_STARTING_X 185
 # define PET_STARTING_Y 105
@@ -124,21 +125,35 @@ NOTE pacman_sound_death[] = {
 	{d5, time_semibiscroma}
 };
 
-
+NOTE pacman_sound_click[] = {
+	{c4, time_semicroma},
+	{db4, time_semicroma},
+	{d4, time_semicroma}
+};
 
 NOTE pacman_sound_pet[] = {
-	{bb5,	time_semicroma},
-	{eb6,	time_semicroma},
-	{gb6,	time_semicroma},
-	{f6,	time_semicroma},
-	{eb6,	time_biscroma},
-	{gb6,	time_semicroma},
-	{eb6,	time_semicroma},
-	{f6,	time_semicroma},
-	{eb6,	time_semicroma},
-	{b5,	time_semicroma},
-	{db6,	time_semicroma},
-	{bb5,	time_semicroma}
+	{a5,	time_croma},
+	{pause, time_semibiscroma},
+	{a5,	time_semicroma},
+	{e5,	time_croma},
+	{pause, time_semibiscroma},
+	{e5,	time_semicroma},
+	{a5,	time_croma},
+	{pause, time_semibiscroma},
+	{a5,	time_semicroma},
+	{e5,	time_semiminima},
+	{pause, time_semibiscroma},
+	{e5,	time_croma},
+	{pause, time_semibiscroma},
+	{e5,	time_semicroma},
+	{f5,	time_croma},
+	{pause, time_semibiscroma},
+	{f5,	time_semicroma},
+	{pause, time_semibiscroma},
+	{f5,	time_semicroma},
+	{g5,	time_semicroma},
+	{f5,	time_semicroma},
+	{e5,	time_croma}
 };
 
 static uint8_t satiety;
@@ -146,12 +161,13 @@ static uint8_t happiness;
 static int canGameRestart_flag;
 static int canProceed_flag;
 
-extern uint8_t HoChiamatoGameOver;
 static int ticks = 0;
 static int currentNote = 0;
+
+extern uint8_t HoChiamatoGameOver;
 	
 void Tamagotchi_Init(void){
- 
+	
 	satiety = 5;
 	happiness = 5;
 	canGameRestart_flag = 0;
@@ -161,13 +177,14 @@ void Tamagotchi_Init(void){
 	DrawBackground();
 	DrawPlayButton('N');
 	DrawSnackButton('N');
-	
+
 	GUI_Text(24, 22, (uint8_t *) "SATIETY:" , White, Black);
 	stats_init_satiety_ghosts();
 	GUI_Text(24, 40, (uint8_t *) "HAPPINESS:" , White, Black);
 	stats_init_happiness_pacman();
 	GUI_Text(24, 4, (uint8_t *) "AGE:" , White, Black);
 	
+	update_volume();
 	play_startup_sound();
 }
 
@@ -268,7 +285,6 @@ void DrawResetButton(uint8_t option){
 void pet_play(void){
 	disable_timer(1);
 	
-	play_eat_sound();
 	set_animation_type('P');
 	pet_increaseHappiness();
 	
@@ -279,7 +295,6 @@ void pet_play(void){
 void pet_snack(void){
 	disable_timer(1);
 	
-	play_eat_sound();
 	set_animation_type('S');
 	pet_increaseSatiety();
 
@@ -288,10 +303,10 @@ void pet_snack(void){
 }
 
 void GameOver(void){
+	
 	disable_timer(1);				// age
 	reset_timer(1);
 	
-	play_death_sound();
 	set_animation_type('D');
 	
 	while(canProceed(0) == 1){
@@ -299,6 +314,8 @@ void GameOver(void){
 	}
 	
 	LCD_SetBackground(Black);
+	
+	play_death_sound();
 	
 	GUI_Text(85, 100, (uint8_t *) "GAME OVER", Red, Black);
 	
@@ -501,7 +518,6 @@ void play_startup_sound(void){
 			}
 	}
 	currentNote = 0;
-	ticks = 0;
 }
 
 void play_death_sound(void){
@@ -518,7 +534,6 @@ void play_death_sound(void){
 			}
 	}
 	currentNote = 0;
-	ticks = 0;
 }
 
 void play_eat_sound(void){
@@ -535,7 +550,6 @@ void play_eat_sound(void){
 			}
 	}
 	currentNote = 0;
-	ticks = 0;
 }
 
 void play_pet_sound(void){
@@ -552,7 +566,21 @@ void play_pet_sound(void){
 			}
 	}
 	currentNote = 0;
-	ticks = 0;
 }
 
+void play_click_sound(void){
+	uint16_t noteNumber = (sizeof(pacman_sound_click)/sizeof(pacman_sound_click[0]));
+	while(currentNote < noteNumber){
+		if(!isNotePlaying())
+			{
+				++ticks;
+				if(ticks == UPTICKS)
+				{
+					ticks = 0;
+					playNote(pacman_sound_click[currentNote++]);
+				}
+			}
+	}
+	currentNote = 0;
+}
 

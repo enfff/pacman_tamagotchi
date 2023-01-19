@@ -29,6 +29,7 @@ void play_startup_sound(void);
 void play_death_sound(void);
 void play_eat_sound(void);
 void play_pet_sound(void);
+void play_click_sound(void);
 
 #endif 
 /*********************************************************************************************************

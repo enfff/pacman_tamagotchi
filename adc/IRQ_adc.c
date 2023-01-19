@@ -11,25 +11,61 @@
 #include "lpc17xx.h"
 #include "adc.h"
 #include "../timer/timer.h"
+#include "../tamagotchi/pet.h"
 
 /*----------------------------------------------------------------------------
   A/D IRQ: Executed when A/D Conversion is ready (signal from ADC peripheral)
  *----------------------------------------------------------------------------*/
 
-unsigned short AD_current;   
+unsigned short AD_current = 4095;   
 unsigned short AD_last = 0xFF;     /* Last converted value               */
-
-/* k=1/f'*f/n  k=f/(f'*n) k=25MHz/(f'*45) */
-
-
-const int freqs[8]={2120,1890,1684,1592,1417,1263,1125,1062};
 
 void ADC_IRQHandler(void) {
   	
   AD_current = ((LPC_ADC->ADGDR>>4) & 0xFFF);/* Read Conversion Result             */
   
-	if(AD_current != AD_last){	
+	AD_current = ((LPC_ADC->ADGDR>>4) & 0xFFF);/* Read Conversion Result             */
+  update_volume();
+	if(AD_current != AD_last){
 		AD_last = AD_current;
-  }
+	}
 	
+}
+
+
+uint8_t update_volume(void){
+
+	static uint8_t ticks = 0;
+	uint8_t last_volume_level = AD_last/1024;		 				// Ritorna valori inclusi tra {0, 1, 2, 3}
+	uint8_t current_volume_level = AD_current/1024;
+
+	
+	if ( AD_current > 50 && current_volume_level == 0){
+		current_volume_level = 1;
+	}
+	
+	if ( AD_last > 50 && last_volume_level == 0 ){
+		last_volume_level = 1;
+	}
+	
+	if(current_volume_level != last_volume_level){
+		draw_speaker_volume(current_volume_level);
+		ticks=1;
+	}
+	
+	else{
+		if(ticks == 0){
+			ticks++;
+			if(ticks >= 40){
+				draw_speaker_volume(current_volume_level); // clean
+				ticks = 0;
+			}
+		}
+	}
+	
+	return current_volume_level;
+}
+
+uint16_t get_volume(void){
+	return AD_current/4;
 }

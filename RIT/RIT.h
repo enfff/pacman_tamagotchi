@@ -21,9 +21,6 @@ extern void reset_RIT( void );
 /* IRQ_RIT.c */
 extern void RIT_IRQHandler (void);
 
-/* User defined functions */
-
-
 #endif /* end __RIT_H */
 /*****************************************************************************
 **                            End Of File

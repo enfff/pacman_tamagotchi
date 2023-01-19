@@ -9,3 +9,6 @@ Per potere eseguire il codice, è sufficiente clonare la repository ed avviare i
 
 ## Animazioni
 Per animare il *pet* ho creato frame per frame delle immagini con [Figma](https://www.figma.com/file/FZPupS7nCecA4BbI6mYKPb/ASE---LandTiger?node-id=0%3A1&t=BSqibJQh62oJFCR7-1), e le ho poi convertite in array di interi *uint16_t* per mezzo di [un plugin](https://github.com/MrPozor/gimp_export565array) per [GIMP](https://www.gimp.org/)
+
+## Suoni
+Ho cercato i suoni su [OnlineSequencer](https://onlinesequencer.net/) e dopo li ho convertiti nel formato che più mi servivano. Vedi `/misc/sounds`

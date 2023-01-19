@@ -31,6 +31,7 @@ void draw_pet_snack(void); // la fragola
 void draw_pet_play(void); // quello spaventato che si deve mangiare
 
 void pet_clear_animation_pursuit(void);
+void draw_speaker_volume(uint8_t volume_amount);
 
 void stats_init_satiety_ghosts(void);
 void stats_init_happiness_pacman(void);

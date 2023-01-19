@@ -13,12 +13,7 @@
 #include "../timer/timer.h"
 #include "../TouchPanel/TouchPanel.h"
 #include "../music/music.h"
-
-#define RIT_SEMIMINIMA 8
-#define RIT_MINIMA 16
-#define RIT_INTERA 32
-
-#define UPTICKS 1
+#include "../adc/adc.h"
 
 /******************************************************************************
 ** Function name:		RIT_IRQHandler
@@ -30,29 +25,30 @@
 **
 ******************************************************************************/
 
-
 extern uint8_t HoChiamatoGameOver;
-
 
 void RIT_IRQHandler (void)
 {					
 	static int8_t last_key_pressed = 0;			// 0-> select, 1-> left, 2-> right
-
+	ADC_start_conversion();
+	
 	if((LPC_GPIO1->FIOPIN & (1<<25)) == 0){ // SELECT
 		
-		if(last_key_pressed == 1){						//Play
-			disable_RIT();
-			pet_play();
-			DrawPlayButton('N');
-			enable_RIT();
+			play_click_sound();
 			
-		}
-		
-		if(last_key_pressed == 2){						//Snack
-			disable_RIT();
-			pet_snack();
-			DrawSnackButton('N');
-			enable_RIT();
+			if(last_key_pressed == 1){						//Play
+				disable_RIT();
+				pet_play();
+				DrawPlayButton('N');
+				enable_RIT();
+				
+			}
+			
+			if(last_key_pressed == 2){						//Snack
+				disable_RIT();
+				pet_snack();
+				DrawSnackButton('N');
+				enable_RIT();
 		}
 		
 		last_key_pressed = 0;
@@ -104,12 +100,9 @@ void RIT_IRQHandler (void)
 		
 		if(display.y > 135 && display.y < 235 && display.x > 55 && display.x < 155) {
 			set_animation_type('T'); // Petting
-			play_pet_sound();
 		}
 		
 	}
-	
-
 	
 	disable_RIT();
 	reset_RIT();
@@ -118,6 +111,7 @@ void RIT_IRQHandler (void)
   LPC_RIT->RICTRL |= 0x1;	/* clear interrupt flag */
   return;
 }
+
 
 /******************************************************************************
 **                            End Of File
