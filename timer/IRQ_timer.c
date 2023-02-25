@@ -246,6 +246,7 @@ void TIMER2_IRQHandler (void)
 	static int currentValue; 
 	
 	currentValue = (uint16_t)((float)SinTable[sineticks]*get_volume()/1024*1.25);
+	// 1.25 fattore correttivo; l'ampiezza massima della sinusoide non assume come valore massimo 1024, bensì 1024*0.75
 	
 	if(currentValue < 32){
 		currentValue = 0;

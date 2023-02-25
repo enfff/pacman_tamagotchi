@@ -17,7 +17,7 @@
   A/D IRQ: Executed when A/D Conversion is ready (signal from ADC peripheral)
  *----------------------------------------------------------------------------*/
 
-unsigned short AD_current = 4095;   
+unsigned short AD_current = 1024;  //inizia con un quarto del volume. il valore max è 4095  
 unsigned short AD_last = 0xFF;     /* Last converted value               */
 
 void ADC_IRQHandler(void) {
